@@ -16,28 +16,15 @@ public class PlayerScore : MonoBehaviourSingleton<PlayerScore>
             score = value;
             if(score > bestScore)
                 bestScore = score;
-            OnScoreChange?.Invoke(score, bestScore);
+            scoreUI.UpdateScoreUI(Score, bestScore);
         }
     }
 
     private int bestScore = 0;
 
-    public event Action<int, int> OnScoreChange;
-
-    private void OnEnable()
-    {
-        OnScoreChange += scoreUI.UpdateScoreUI;
-    }
-
-    private void OnDestroy()
-    {
-        OnScoreChange -= scoreUI.UpdateScoreUI;
-    }
-
-    private void Awake()
+    private void Start()
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        scoreUI.UpdateScoreUI(Score, bestScore);
         Initialization();
     }
 

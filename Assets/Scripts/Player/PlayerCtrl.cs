@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +6,6 @@ using UnityEngine;
 public class PlayerCtrl : MonoBehaviour
 {
     private Rigidbody2D rb;
-
-    [SerializeField] private EnemysCtrl enemysCtrl;
 
     [Header("Move")]
     [SerializeField] private float moveSpeed = 3f;
@@ -33,27 +32,24 @@ public class PlayerCtrl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z) && !bulletActive)
         {
-                Shoot();
+            Shoot();
         }
 
-        if(!bulletActive && !preBullet.activeInHierarchy)
-        {
-            preBullet.SetActive(true);
-        }
+        CheckCanShoot();
     }
 
     private void Movement()
     {
         float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
-
-        Vector2 input = new Vector2(x, y);
 
         rb.velocity = new Vector2(x * moveSpeed, 0);
-        if (transform.position.x > 7.5f)
-            transform.position = new Vector2(7.5f, -4.2f);
-        else if (transform.position.x < -7.5f)
-            transform.position = new Vector2(-7.5f, -4.2f);
+        LimitX(-7.5f, 7.5f);
+    }
+
+    private void LimitX(float min, float max)
+    {
+        float clampX = Mathf.Clamp(transform.position.x, min, max);
+        transform.position = new Vector2(clampX, transform.position.y);
     }
 
     private void Shoot()
@@ -62,5 +58,13 @@ public class PlayerCtrl : MonoBehaviour
         bullet.transform.position = muzzle.position;
         bullet.SetActive(true);
         bulletScript.SetVelocity(gameObject, muzzle.up, shootSpeed);
+    }
+
+    private void CheckCanShoot()
+    {
+        if (!bulletActive && !preBullet.activeInHierarchy)
+        {
+            preBullet.SetActive(true);
+        }
     }
 }

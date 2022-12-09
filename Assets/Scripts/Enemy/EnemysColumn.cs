@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyColumn : MonoBehaviour
+public class EnemysColumn : MonoBehaviour
 {
     private EnemyBase[] colEnemys;
     private Transform[] checkRanges;
@@ -37,7 +37,7 @@ public class EnemyColumn : MonoBehaviour
         float centerY = 0;
         foreach (EnemyBase enemy in colEnemys)
         {
-            if (enemy.gameObject.activeInHierarchy && !enemy.isFlying)
+            if (enemy.gameObject.activeInHierarchy && !enemy.isAttacking)
             {
                 centerY += enemy.transform.localPosition.y;
                 count++;
@@ -61,7 +61,7 @@ public class EnemyColumn : MonoBehaviour
     {
         foreach(EnemyBase enemy in colEnemys)
         {
-            if (enemy.gameObject.activeInHierarchy && !enemy.isFlying)
+            if (enemy.gameObject.activeInHierarchy && !enemy.isAttacking)
             {
                 canUseEnemy = enemy;
                 return true;
@@ -71,13 +71,13 @@ public class EnemyColumn : MonoBehaviour
         return false;
     }
 
-    public float GetOtherAnimationNor()
+    public float GetOtherAnimationProgress()
     {
         foreach (EnemyBase enemy in colEnemys)
         {
-            if (enemy.gameObject.activeInHierarchy && !enemy.isFlying)
+            if (enemy.gameObject.activeInHierarchy && !enemy.isAttacking)
             {
-                return enemy.GetAnimationNor();
+                return enemy.GetAnimationProgress();
             }
         }
 
@@ -92,11 +92,11 @@ public class EnemyColumn : MonoBehaviour
         }
     }
 
-    public void SetAnimationNor(float t)
+    public void SetAnimationProgress(float t)
     {
         foreach(EnemyBase enemy in colEnemys)
         {
-            enemy.SetAnimationNor(t);
+            enemy.SetAnimationProgress(t);
         }
     }
 }

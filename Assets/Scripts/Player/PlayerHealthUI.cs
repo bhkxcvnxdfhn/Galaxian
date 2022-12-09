@@ -8,6 +8,11 @@ public class PlayerHealthUI : MonoBehaviour
     [SerializeField] private GameObject healthPrefab;
     private List<GameObject> healthObj;
 
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void InitHealthUI(int hp)
     {
         healthObj = new List<GameObject>();

@@ -1067,7 +1067,7 @@ GameObject:
   - component: {fileID: 290944336}
   - component: {fileID: 290944335}
   m_Layer: 5
-  m_Name: Title
+  m_Name: Text(BestScoreTitle)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1228,7 +1228,7 @@ GameObject:
   - component: {fileID: 299315611}
   - component: {fileID: 299315610}
   m_Layer: 5
-  m_Name: Title
+  m_Name: Text(PlayerScoreTitle)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2700,7 +2700,7 @@ GameObject:
   - component: {fileID: 692146968}
   - component: {fileID: 692146967}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Button(StartGame)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3069,7 +3069,7 @@ RectTransform:
   m_Children:
   - {fileID: 1877098058}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3407,7 +3407,7 @@ GameObject:
   - component: {fileID: 835933020}
   - component: {fileID: 835933021}
   m_Layer: 5
-  m_Name: Level
+  m_Name: LevelImages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4424,7 +4424,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &963204648
 PrefabInstance:
@@ -5949,7 +5949,7 @@ GameObject:
   - component: {fileID: 1359409669}
   - component: {fileID: 1359409668}
   m_Layer: 5
-  m_Name: Score
+  m_Name: Text(Score)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6162,7 +6162,7 @@ GameObject:
   - component: {fileID: 1389516917}
   - component: {fileID: 1389516916}
   m_Layer: 5
-  m_Name: BestScore
+  m_Name: Text(BestScore)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6862,7 +6862,7 @@ GameObject:
   - component: {fileID: 1544360553}
   - component: {fileID: 1544360552}
   m_Layer: 5
-  m_Name: GameImage
+  m_Name: GameIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7533,7 +7533,7 @@ GameObject:
   - component: {fileID: 1806178061}
   - component: {fileID: 1806178060}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Button(Exit)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7948,14 +7948,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1877098057}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b452e017b240864da565f11878295b4, type: 3}
+  m_Script: {fileID: 11500000, guid: d6a4a9195138f4b4d8e5c5f56d496a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pauseObj: {fileID: 1299138552}
   prepareObj: {fileID: 924399830}
   menuObj:
-  - {fileID: 1544360550}
   - {fileID: 1405685215}
+  - {fileID: 1544360550}
   playGameObj:
   - {fileID: 835933018}
   - {fileID: 1626601430}
@@ -7978,7 +7978,7 @@ GameObject:
   - component: {fileID: 1882403130}
   - component: {fileID: 1882403129}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button(StartGame)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8278,7 +8278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d13dfee24fb37a14285e5f3a653c5acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemysCtrl: {fileID: 1572535637}
   moveSpeed: 5
   bullet: {fileID: 854314848}
   muzzle: {fileID: 1749297906}

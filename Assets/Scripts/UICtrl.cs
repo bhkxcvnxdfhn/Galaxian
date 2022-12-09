@@ -3,57 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MenuCtrl : MonoBehaviour
+public class UICtrl : MonoBehaviour
 {
     [SerializeField] private GameObject pauseObj;
     [SerializeField] private GameObject prepareObj;
     [SerializeField] private GameObject[] menuObj;
     [SerializeField] private GameObject[] playGameObj;
 
-    private RectTransform rectTransform;
+    private RectTransform rect;
 
-    public bool isMoving { get; private set; }
     private Coroutine moveCoroutine;
 
     private void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
+        rect = GetComponent<RectTransform>();
         MenuMoveIn();
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Submit"))
+        if (Input.GetButtonDown("Submit") && moveCoroutine != null)
         {
             moveCoroutine.Stop(this);
-            rectTransform.anchoredPosition = Vector2.zero;
+            rect.anchoredPosition = Vector2.zero;
             GameSceneManager.Instance.CanStart = true;
         }
     }
 
     private void MenuMoveIn()
     {
-        ClosePlayUI();
-        GameSceneManager.Instance.CanStart = false;
-        MoveToTarget(Vector2.zero, 2f, new Vector2(0, -Camera.main.pixelHeight), () => GameSceneManager.Instance.CanStart = true);
         OpenMenuUI();
+        GameSceneManager.Instance.CanStart = false;
+        Vector2 from = new Vector2(0, -Camera.main.pixelHeight);
+
+        MoveToTarget(Vector2.zero, 2f, from, () => GameSceneManager.Instance.CanStart = true);
     }
 
-    private void MoveToTarget(Vector2 target, float duration, Vector2 fromPos, Action OnComplete  = null)
+    private void MoveToTarget(Vector2 target, float duration, Vector2 fromPos, Action OnComplete)
     {
         moveCoroutine = StartCoroutine(DoMoveToTarget(target, duration, fromPos, OnComplete));
     }
-
     private IEnumerator DoMoveToTarget(Vector2 target, float duration, Vector2 fromPos, Action OnComplete)
     {
-        rectTransform.anchoredPosition = fromPos;
-        Vector2 speed = (target - rectTransform.anchoredPosition) / duration;
-        for (float f = duration; f >= 0.0f; f -= Time.deltaTime)
+        rect.anchoredPosition = fromPos;
+        Vector2 speed = (target - rect.anchoredPosition) / duration;
+        while (duration > 0)
         {
-            rectTransform.anchoredPosition += speed * Time.deltaTime;
+            rect.anchoredPosition += speed * Time.deltaTime;
+            duration -= Time.deltaTime;
             yield return null;
         }
-        rectTransform.anchoredPosition = target;
+        rect.anchoredPosition = target;
         OnComplete?.Invoke();
     }
 
@@ -63,7 +63,7 @@ public class MenuCtrl : MonoBehaviour
         MoveToTarget(new Vector2(0, 150), 1, Vector2.zero, () => MenuMoveIn());
     }
 
-    public void GameStart()
+    public void OpenGamePlayUI()
     {
         CloseMenuUI();
         OpenPlayUI();
@@ -101,12 +101,12 @@ public class MenuCtrl : MonoBehaviour
         }
     }
 
-    public void SetPauseUI(bool value)
+    public void SetPauseUIActive(bool value)
     {
         pauseObj.SetActive(value);
     }
 
-    public void SetPrepareUI(bool value)
+    public void SetPrepareUIActive(bool value)
     {
         prepareObj.SetActive(value);
     }

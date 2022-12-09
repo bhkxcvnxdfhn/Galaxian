@@ -36,7 +36,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         OnHealthChange -= healthUI.UpdateUI;
     }
 
-    private void Awake()
+    private void Start()
     {
         healthUI.InitHealthUI(maxHP);
     }

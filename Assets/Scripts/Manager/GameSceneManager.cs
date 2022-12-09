@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 {
-    [SerializeField] private MenuCtrl menuCtrl;
+    [SerializeField] private UICtrl menuCtrl;
     [SerializeField] private EnemysCtrl enemys;
     [SerializeField] private PlayerCtrl player;
     [SerializeField] private PlayerScore playerScore;
@@ -41,12 +41,13 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
     public void StartGame()
     {
         if (!CanStart) return;
+
         StartCoroutine(DoStartGame());
     }
 
     private IEnumerator DoStartGame()
     {
-        menuCtrl.GameStart();
+        menuCtrl.OpenGamePlayUI();
         playerHealthUI.UpdateUI(playerHealth.MaxHP);
         currentLevel = 1;
         enemys.Initialization();
@@ -61,7 +62,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
     private void GamePause()
     {
         gamePause = !gamePause;
-        menuCtrl.SetPauseUI(gamePause);
+        menuCtrl.SetPauseUIActive(gamePause);
         Time.timeScale = gamePause ? 0 : 1;
     }
 
@@ -107,9 +108,9 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
     }
     private IEnumerator DoPreparePlayer()
     {
-        menuCtrl.SetPrepareUI(true);
+        menuCtrl.SetPrepareUIActive(true);
         yield return new WaitForSeconds(1);
-        menuCtrl.SetPrepareUI(false);
+        menuCtrl.SetPrepareUIActive(false);
         player.transform.position = playerSpawnPoint.position;
         player.gameObject.SetActive(true);
         enemys.StartAttack();

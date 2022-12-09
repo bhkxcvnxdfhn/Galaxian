@@ -125,7 +125,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.8, y: 0.8}
+    oldSize: {x: 0.16, y: 0.16}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -167,10 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6561f618fd0ae948bc946be8b3863d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 0
   minAmplitude: 2.5
   wave: 1
-  randomAddTime: {x: 0, y: 0}
-  randomAddOffsetX: {x: -0.5, y: 0.5}
+  randomTargetOffsetX: {x: -0.5, y: 0.5}
   shootSpeed: 6
   stayScore: 30
   flyScore: 60

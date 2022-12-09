@@ -5,13 +5,17 @@ using UnityEngine;
 public class EnemysArea : MonoBehaviour
 {
     [SerializeField] private Area area = Area.Right;
-    private EnemyColumn[] enemyCol;
+    private EnemysColumn[] enemyCol;
 
     private void Start()
     {
-        enemyCol = GetComponentsInChildren<EnemyColumn>();
+        enemyCol = GetComponentsInChildren<EnemysColumn>();
+        SetEnemyAreaNum();
+    }
 
-        foreach(EnemyColumn enemyColumn in enemyCol)
+    private void SetEnemyAreaNum()
+    {
+        foreach (EnemysColumn enemyColumn in enemyCol)
         {
             enemyColumn.SetAreaNum((int)area);
         }
@@ -19,7 +23,7 @@ public class EnemysArea : MonoBehaviour
 
     public bool HaveCanUseEneny(out EnemyBase enemy)
     {
-        foreach(EnemyColumn enemyColumn in enemyCol)
+        foreach(EnemysColumn enemyColumn in enemyCol)
         {
             if (enemyColumn.HaveCanUseEneny(out enemy))
             {
@@ -30,12 +34,12 @@ public class EnemysArea : MonoBehaviour
         return false;
     }
 
-    public void SetAnimationNor()
+    public void SetAnimationProgress()
     {
         for(int i = 0; i < enemyCol.Length; i++)
         {
             if(i % 2 == 0)
-                enemyCol[i].SetAnimationNor(0.5f);
+                enemyCol[i].SetAnimationProgress(0.5f);
         }
     }
 }

@@ -7,19 +7,19 @@ public class EnemysCtrl : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1;
     [SerializeField] private Vector2 xRange;
-    [SerializeField] private Vector2 attackSec = new Vector2(7f, 10f);
+    [SerializeField] private Vector2 attackRandomSec = new Vector2(7f, 10f);
 
     [SerializeField] private EnemysArea rightArea;
     [SerializeField] private EnemysArea leftArea;
-    [SerializeField] private EnemyColumn[] enemyColumn;
+    [SerializeField] private EnemysColumn[] enemyColumn;
 
     private List<EnemyBase> enemys;
     private List<EnemyBase> activeEnemy;
-    private List<EnemyBase> flyingEnemy;
+    private List<EnemyBase> attackingEnemy;
     private int currentLeftEnemyCount => activeEnemy.Count;
-    public int currentFlyingEnemyCount => flyingEnemy.Count;
+    public int currentFlyingEnemyCount => attackingEnemy.Count;
 
-    private bool canAttack;
+    private bool canAttack = false;
     private bool stopMove = true;
     private int moveDir = 1;
     private float attackRandomTime
@@ -28,7 +28,7 @@ public class EnemysCtrl : MonoBehaviour
         {
             float levelStrength = (GameSceneManager.Instance.currentLevel - 1) * 0.2f;
             float timeStrength = Mathf.Clamp((Time.time - GameSceneManager.Instance.levelStartTime) / 60, 0, 2);
-            return Random.Range(attackSec.x, attackSec.y) - levelStrength - timeStrength;
+            return Random.Range(attackRandomSec.x, attackRandomSec.y) - levelStrength - timeStrength;
         }
      }
     private float attackTimer;
@@ -43,7 +43,7 @@ public class EnemysCtrl : MonoBehaviour
     {
         transform.position = new Vector3(0, 3.4f, 0);
         activeEnemy = new List<EnemyBase>(enemys);
-        flyingEnemy = new List<EnemyBase>();
+        attackingEnemy = new List<EnemyBase>();
         ShowEnemys();
     }
 
@@ -53,7 +53,7 @@ public class EnemysCtrl : MonoBehaviour
             ChangeMoveDir();
 
         if (!stopMove)
-            Move();
+            Movement();
 
         if(canAttack && GameSceneManager.Instance.GameStart)
         {
@@ -61,7 +61,6 @@ public class EnemysCtrl : MonoBehaviour
             {
                 Attack();
                 attackTimer = attackRandomTime;
-                Debug.Log(attackTimer);
             }
             else
                 attackTimer -= Time.deltaTime;
@@ -70,26 +69,15 @@ public class EnemysCtrl : MonoBehaviour
 
     private void Attack()
     {
-        int r = Random.Range(0, 2);
-        if (r == 0)
+        EnemysArea area = MathfExtension.GetRandom(leftArea, rightArea);
+        if (area.HaveCanUseEneny(out EnemyBase enemy))
         {
-            if (leftArea.HaveCanUseEneny(out EnemyBase enemy))
-            {
-                flyingEnemy.Add(enemy);
-                enemy.Attack();
-            }
-        }
-        else if (r == 1)
-        {
-            if (rightArea.HaveCanUseEneny(out EnemyBase enemy))
-            {
-                flyingEnemy.Add(enemy);
-                enemy.Attack();
-            }
+            attackingEnemy.Add(enemy);
+            enemy.Attack();
         }
     }
 
-    private void Move()
+    private void Movement()
     {
         transform.position += Vector3.right * moveDir * Time.deltaTime * moveSpeed;
     }
@@ -107,7 +95,7 @@ public class EnemysCtrl : MonoBehaviour
 
     private void UpdateColCheckRange()
     {
-        foreach(EnemyColumn column in GetComponentsInChildren<EnemyColumn>())
+        foreach(EnemysColumn column in GetComponentsInChildren<EnemysColumn>())
         {
             column.UpdateCheckRange();
         }
@@ -116,10 +104,6 @@ public class EnemysCtrl : MonoBehaviour
     private void ShowEnemys()
     {
         StartCoroutine(DoShowEnemys());
-        //foreach(EnemyBase enemy in enemys)
-        //{
-        //    enemy.gameObject.SetActive(true);
-        //}
     }
 
     private IEnumerator DoShowEnemys()
@@ -133,8 +117,8 @@ public class EnemysCtrl : MonoBehaviour
         }
         InitEnemys();
         UpdateColCheckRange();
-        rightArea.SetAnimationNor();
-        leftArea.SetAnimationNor();
+        rightArea.SetAnimationProgress();
+        leftArea.SetAnimationProgress();
         attackTimer = attackRandomTime;
         stopMove = false;
     }
@@ -155,16 +139,16 @@ public class EnemysCtrl : MonoBehaviour
         }
     }
 
-    public void EnemyEndFly(EnemyBase enemy)
+    public void EnemyAttackEnd(EnemyBase enemy)
     {
-        flyingEnemy.Remove(enemy);
+        attackingEnemy.Remove(enemy);
     }
 
     public void EnemyDead(EnemyBase enemy)
     {
         activeEnemy.Remove(enemy);
-        if(flyingEnemy.Contains(enemy))
-            flyingEnemy.Remove(enemy);
+        if(attackingEnemy.Contains(enemy))
+            attackingEnemy.Remove(enemy);
         if(currentLeftEnemyCount <= 0)
         {
             GameSceneManager.Instance.NextLevel();
